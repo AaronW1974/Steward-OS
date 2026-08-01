@@ -3,17 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Eden Project</title>
+    <title>Sure Power Scheduler Training App</title>
     <style>
         :root {
-            --bg-color: #f0f4f1;
-            --card-color: #ffffff;
-            --text-main: #1e2d20;
-            --text-muted: #556658;
-            --accent: #2e5a36;
-            --accent-light: #e3ede5;
-            --success: #1a4d2e;
-            --border-radius: 20px;
+            --primary: #003366; /* Sure Power Dark Blue */
+            --secondary: #ff9900; /* Amber/Orange Accent */
+            --bg: #f4f6f9;
+            --card-bg: #ffffff;
+            --text: #333333;
+            --success: #28a745;
+            --danger: #dc3545;
         }
 
         * {
@@ -21,334 +20,289 @@
             margin: 0;
             padding: 0;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-main);
+            background-color: var(--bg);
+            color: var(--text);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
         }
 
-        /* Phone Container Simulation */
+        /* Phone frame simulation */
         .phone-container {
             width: 100%;
             max-width: 412px;
-            height: 100vh;
-            max-height: 892px;
-            background-color: var(--card-color);
+            height: 844px;
+            background: var(--card-bg);
+            border-radius: 30px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
+            border: 8px solid #222;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.12);
-            position: relative;
             overflow: hidden;
+            position: relative;
         }
 
-        @media (min-width: 450px) {
-            .phone-container {
-                border-radius: 40px;
-                height: 85vh;
-                border: 12px solid #1a1a1a;
-            }
-        }
-
-        /* App Header */
+        /* Top App Bar */
         .app-header {
-            padding: 24px 24px 16px 24px;
-            background-color: var(--card-color);
-            border-bottom: 1px solid #e9eee9;
+            background-color: var(--primary);
+            color: #fff;
+            padding: 16px;
             text-align: center;
-            z-index: 5;
+            font-weight: bold;
+            font-size: 1.1rem;
+            letter-spacing: 0.5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .app-header h1 {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--accent);
-            letter-spacing: -0.5px;
-        }
-
-        .app-header p {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-top: 4px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        /* Scrollable Area */
+        /* Content Scroll Area */
         .app-content {
             flex: 1;
             overflow-y: auto;
-            padding: 20px;
-            padding-bottom: 90px;
+            padding: 16px;
+            padding-bottom: 80px; /* Space for bottom navigation */
         }
 
-        .screen {
+        /* Tab Layouts */
+        .tab-content {
             display: none;
         }
 
-        .screen.active {
+        .tab-content.active {
             display: block;
-        }
-
-        /* Card Elements */
-        .card {
-            background-color: var(--card-color);
-            border: 1px solid #e9eee9;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
-            transition: all 0.3s ease;
-        }
-
-        .card-accent {
-            background-color: var(--accent-light);
-            border: none;
-        }
-
-        .highlight-text {
-            font-size: 1.05rem;
-            font-weight: 700;
-            line-height: 1.5;
-            color: var(--accent);
-            border-left: 4px solid var(--accent);
-            padding-left: 12px;
         }
 
         h2 {
             font-size: 1.2rem;
-            margin-bottom: 8px;
-            color: var(--accent);
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            color: var(--primary);
+            margin-bottom: 12px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 4px;
         }
 
         p {
-            font-size: 0.95rem;
-            line-height: 1.5;
-            color: var(--text-main);
-        }
-
-        .card p {
-            color: #334436;
-        }
-
-        /* Fully Interactive Day Items */
-        .day-card {
-            cursor: pointer;
-            position: relative;
-            border-left: 4px solid #ccd5ce;
-        }
-
-        .day-card.completed {
-            background-color: #f2f7f3;
-            border-left-color: var(--accent);
-            border-top-color: #e2ede4;
-            border-right-color: #e2ede4;
-            border-bottom-color: #e2ede4;
-        }
-
-        .day-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 8px;
-        }
-
-        .day-title {
-            font-weight: 700;
-            font-size: 1.05rem;
-            color: var(--text-main);
-        }
-
-        .day-card.completed .day-title {
-            color: var(--accent);
-            text-decoration: line-through;
-            opacity: 0.8;
-        }
-
-        .checkbox-circle {
-            width: 24px;
-            height: 24px;
-            border: 2px solid #ccd5ce;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: all 0.2s ease;
-            background-color: white;
-        }
-
-        .day-card.completed .checkbox-circle {
-            border-color: var(--accent);
-            background-color: var(--accent);
-        }
-
-        .checkbox-circle::after {
-            content: "✓";
-            color: white;
-            font-size: 0.85rem;
-            font-weight: bold;
-            display: none;
-        }
-
-        .day-card.completed .checkbox-circle::after {
-            display: block;
-        }
-
-        .day-body {
             font-size: 0.9rem;
-            color: var(--text-muted);
-            transition: all 0.2s ease;
+            line-height: 1.4;
+            margin-bottom: 12px;
+            color: #666;
         }
 
-        .day-card.completed .day-body {
+        /* Checklist Component */
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            background: #fff;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .checklist-item input {
+            margin-top: 3px;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+
+        .checklist-item.checked {
+            border-left-color: var(--success);
             opacity: 0.6;
         }
 
-        /* Progress Ring / Dashboard Banner */
-        .progress-banner {
-            background: linear-gradient(135deg, var(--accent), #1a4d2e);
+        /* Matrix Cards */
+        .matrix-card {
+            background: #fff;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid #ddd;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 6px;
+        }
+
+        .badge-t1 { background-color: #6c757d; }
+        .badge-t2 { background-color: #17a2b8; }
+        .badge-t3 { background-color: #fd7e14; }
+        .badge-t4 { background-color: #dc3545; }
+
+        /* Interactive Quiz */
+        .quiz-option {
+            background: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .quiz-option:hover {
+            background: #e9ecef;
+        }
+
+        /* Email Builder */
+        textarea {
+            width: 100%;
+            height: 150px;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            font-family: monospace;
+            font-size: 0.8rem;
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: var(--primary);
             color: white;
-            border-radius: var(--border-radius);
-            padding: 20px;
-            margin-bottom: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
         }
 
-        .progress-text h3 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 4px;
+        button:hover {
+            background-color: #002244;
         }
 
-        .progress-text p {
-            color: #b1cbb5;
-            font-size: 0.85rem;
-        }
-
-        .progress-counter {
-            font-size: 1.8rem;
-            font-weight: 800;
-            background-color: rgba(255,255,255,0.15);
-            padding: 8px 16px;
-            border-radius: 12px;
-            font-variant-numeric: tabular-nums;
-        }
-
-        /* Bottom Fixed Navigation Bar */
+        /* Bottom Tab Navigation Bar */
         .nav-bar {
             position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 74px;
-            background-color: var(--card-color);
-            border-top: 1px solid #e9eee9;
+            height: 65px;
+            background: var(--primary);
             display: flex;
             justify-content: space-around;
             align-items: center;
-            padding-bottom: env(safe-area-inset-bottom);
-            z-index: 5;
+            border-top: 1px solid rgba(255,255,255,0.1);
         }
 
         .nav-item {
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            color: var(--text-muted);
+            font-size: 0.75rem;
             cursor: pointer;
-            font-size: 0.8rem;
-            font-weight: 600;
-            background: none;
-            border: none;
-            flex: 1;
-            height: 100%;
-            justify-content: center;
-            gap: 4px;
-            transition: all 0.2s ease;
         }
 
         .nav-item.active {
-            color: var(--accent);
+            color: var(--secondary);
+            font-weight: bold;
         }
 
         .nav-icon {
             font-size: 1.4rem;
-            transition: transform 0.2s ease;
-        }
-
-        .nav-item.active .nav-icon {
-            transform: scale(1.15);
-        }
-
-        /* Clear Button styling */
-        .btn-reset {
-            background: none;
-            border: 1px dashed var(--text-muted);
-            color: var(--text-muted);
-            padding: 10px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            cursor: pointer;
-            width: 100%;
-            margin-top: 8px;
-            margin-bottom: 24px;
-            transition: all 0.2s ease;
-        }
-
-        .btn-reset:active {
-            background-color: #f5f5f5;
+            margin-bottom: 2px;
         }
     </style>
 </head>
 <body>
 
-    <div class="phone-container">
-        <!-- App Header Shared Globally -->
-        <header class="app-header">
-            <h1 id="header-title">My Blueprint</h1>
-            <p id="header-subtitle">11-11-1974 Alignment</p>
-        </header>
+<div class="phone-container">
+    <div class="app-header">Sure Power Dispatch Training</div>
 
-        <!-- Dynamic Screen Views Inside Phone Frame -->
-        <main class="app-content">
+    <div class="app-content">
+        
+        <!-- TAB 1: MASTER FLOW -->
+        <div id="tab-flow" class="tab-content active">
+            <h2>Daily Dispatch Workflow</h2>
+            <p>Complete these stages in order every single business day.</p>
             
-            <!-- VIEW 1: MANIFESTO SCREEN -->
-            <div id="screen-manifesto" class="screen active">
-                <div class="card card-accent">
-                    <div class="highlight-text">
-                        I am Aaron Stephen Wenger. Animated by the breath of the Creator, built to serve as a catalyst for truth and a builder of Eden.
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <h2><span>📣</span> Aaron • The Voice</h2>
-                    <p>I use my voice to speak clearly to the conscience, helping to liberate minds from the modern captivity of manufactured want, anxiety, and digital distraction.</p>
-                </div>
-                
-                <div class="card">
-                    <h2><span>👑</span> Stephen • The Crown</h2>
-                    <p>I commit to absolute integrity. Human nature is pushy, but divine truth is lived. I lead entirely by example, protecting my private relationship with the Spirit.</p>
-                </div>
-                
-                <div class="card">
-                    <h2><span>🌿</span> Wenger • The Pathfinder</h2>
-                    <p>I clear away the concrete noise and division of the corporate system to drop "seeds of Eden" right here in Philadelphia, cultivating quiet, natural restoration.</p>
-                </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox">
+                <div><strong>Verify Chemistry & Voltage</strong><br>Check contract parameters (VLA, VRLA, NiCad) and matching voltage ranges.</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox">
+                <div><strong>Verify Asset Testing Mode</strong><br>Flag multi-day Alber BCT2000 load tests and trigger two-man rule if needed.</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox">
+                <div><strong>Secure Security Clearance</strong><br>Match tech/vehicle details to site Tier requirements before route locking.</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox">
+                <div><strong>UPS Subcontractor Pull</strong><br>Issue work order, pull tech profiles, and intercept client Q&As.</div>
+            </div>
+            <div class="checklist-item" onclick="toggleCheck(this)">
+                <input type="checkbox">
+                <div><strong>Broadcast Fleet Email</strong><br>Generate and transmit the 4-line uniform dispatch layout to the firm.</div>
+            </div>
+        </div>
+
+        <!-- TAB 2: SECURITY SECURITY MATCHING -->
+        <div id="tab-security" class="tab-content">
+            <h2>Site Access Requirements</h2>
+            <p>Verify lead times and dynamic security criteria matrices.</p>
+            
+            <div class="matrix-card">
+                <span class="badge badge-t4">Tier 4: Government / Nuclear</span>
+                <p><strong>Lead Time:</strong> 2 - 4 Weeks</p>
+                <p><strong>Data Required:</strong> Full Name, SSN, DOB, Birthplace, DL# + State, and Security Clearances.</p>
+            </div>
+            
+            <div class="matrix-card">
+                <span class="badge badge-t3">Tier 3: Refineries & Power Plants</span>
+                <p><strong>Lead Time:</strong> 1 - 2 Weeks</p>
+                <p><strong>Data Required:</strong> Calibrated Tool List, Serial Numbers, Safety Certificates (OSHA/NFPA).</p>
             </div>
 
-            <!-- VIEW 2: 7-DAY ATTENTION CLEANSE SCREEN -->
+            <div class="matrix-card">
+                <span class="badge badge-t2">Tier 2: Hospitals & Enterprise Data Centers</span>
+                <p><strong>Lead Time:</strong> 3 - 5 Business Days</p>
+                <p><strong>Data Required:</strong> Full Tech Name, DL#, Vehicle (Year, Make, Model, Color, Plate #, State).</p>
+            </div>
+        </div>
+
+        <!-- TAB 3: EMAIL GENERATOR -->
+        <div id="tab-email" class="tab-content">
+            <h2>Daily Schedule Builder</h2>
+            <p>Fill out fields to structure the strict 4-line operational layout block.</p>
+            
+            <button onclick="generateSampleEmail()" style="margin-bottom: 12px;">Load Sample Active Template</button>
+            <textarea id="emailBox" placeholder="Draft updates here..."></textarea>
+            <button onclick="alert('Template locked to local clipboard buffer!')">Copy Text to Device Clipboard</button>
+        </div>
+
+        <!-- TAB 4: COMPLIANCE QUIZ -->
+        <div id="tab-quiz" class="tab-content">
+            <h2>Scenario Competency Quiz</h2>
+            <p id="quiz-question">Loading puzzle scenario...</p>
+            <div id="quiz-options"></div>
+            <p id="quiz-feedback" style="font-weight: bold; margin-top: 10px;"></p>
+        </div>
+
+    </div>
+
+    <!-- Navigation Footer Links -->
+    <div class="nav-bar">
+        <div class="nav-item active" onclick="switchTab('tab-flow', this)">
+            <span class="nav-icon">📋</span>
+            <span>Flow</span>
+        </div>
+
 
 
 
