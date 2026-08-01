@@ -2,306 +2,183 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sure Power Scheduler Training App</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Growth Blueprint</title>
+    <!-- Tailwind CSS for modern mobile UI -->
+    <script src="https://jsdelivr.net"></script>
+    <!-- Lucide Icons for app aesthetics -->
+    <script src="https://unpkg.com"></script>
     <style>
-        :root {
-            --primary: #003366; /* Sure Power Dark Blue */
-            --secondary: #ff9900; /* Amber/Orange Accent */
-            --bg: #f4f6f9;
-            --card-bg: #ffffff;
-            --text: #333333;
-            --success: #28a745;
-            --danger: #dc3545;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        }
-
+        /* Mobile app feel enhancements */
         body {
-            background-color: var(--bg);
-            color: var(--text);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
         }
-
-        /* Phone frame simulation */
-        .phone-container {
-            width: 100%;
-            max-width: 412px;
-            height: 844px;
-            background: var(--card-bg);
-            border-radius: 30px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-            border: 8px solid #222;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
-
-        /* Top App Bar */
-        .app-header {
-            background-color: var(--primary);
-            color: #fff;
-            padding: 16px;
-            text-align: center;
-            font-weight: bold;
-            font-size: 1.1rem;
-            letter-spacing: 0.5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        /* Content Scroll Area */
-        .app-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 16px;
-            padding-bottom: 80px; /* Space for bottom navigation */
-        }
-
-        /* Tab Layouts */
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        h2 {
-            font-size: 1.2rem;
-            color: var(--primary);
-            margin-bottom: 12px;
-            border-bottom: 2px solid var(--secondary);
-            padding-bottom: 4px;
-        }
-
-        p {
-            font-size: 0.9rem;
-            line-height: 1.4;
-            margin-bottom: 12px;
-            color: #666;
-        }
-
-        /* Checklist Component */
-        .checklist-item {
-            display: flex;
-            align-items: flex-start;
-            background: #fff;
-            padding: 12px;
-            margin-bottom: 8px;
-            border-radius: 8px;
-            border-left: 4px solid var(--primary);
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .checklist-item input {
-            margin-top: 3px;
-            margin-right: 10px;
-            transform: scale(1.2);
-        }
-
-        .checklist-item.checked {
-            border-left-color: var(--success);
-            opacity: 0.6;
-        }
-
-        /* Matrix Cards */
-        .matrix-card {
-            background: #fff;
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-            border: 1px solid #ddd;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: bold;
-            color: #fff;
-            margin-bottom: 6px;
-        }
-
-        .badge-t1 { background-color: #6c757d; }
-        .badge-t2 { background-color: #17a2b8; }
-        .badge-t3 { background-color: #fd7e14; }
-        .badge-t4 { background-color: #dc3545; }
-
-        /* Interactive Quiz */
-        .quiz-option {
-            background: #f8f9fa;
-            border: 1px solid #ddd;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 8px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: all 0.2s;
-        }
-
-        .quiz-option:hover {
-            background: #e9ecef;
-        }
-
-        /* Email Builder */
-        textarea {
-            width: 100%;
-            height: 150px;
-            padding: 10px;
-            border-radius: 8px;
-            border: 1px solid #ccc;
-            font-family: monospace;
-            font-size: 0.8rem;
-            margin-bottom: 10px;
-        }
-
-        button {
-            background-color: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-        }
-
-        button:hover {
-            background-color: #002244;
-        }
-
-        /* Bottom Tab Navigation Bar */
-        .nav-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 65px;
-            background: var(--primary);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid rgba(255,255,255,0.1);
-        }
-
-        .nav-item {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 0.75rem;
-            cursor: pointer;
-        }
-
-        .nav-item.active {
-            color: var(--secondary);
-            font-weight: bold;
-        }
-
-        .nav-icon {
-            font-size: 1.4rem;
-            margin-bottom: 2px;
+        .safe-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 16px);
         }
     </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-<div class="phone-container">
-    <div class="app-header">Sure Power Dispatch Training</div>
+    <!-- TOP HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-xs">
+        <div class="flex items-center gap-2">
+            <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
+                <i data-lucide="trending-up" class="w-5 h-5"></i>
+            </div>
+            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Growth Blueprint</h1>
+        </div>
+        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset Data">
+            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+        </button>
+    </header>
 
-    <div class="app-content">
+    <!-- MAIN APP SCREEN CONTAINER -->
+    <main class="flex-1 overflow-y-auto px-4 py-6 max-w-md mx-auto w-full space-y-6">
         
-        <!-- TAB 1: MASTER FLOW -->
-        <div id="tab-flow" class="tab-content active">
-            <h2>Daily Dispatch Workflow</h2>
-            <p>Complete these stages in order every single business day.</p>
+        <!-- DYNAMIC SUMMARY CARD -->
+        <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
+            <div>
+                <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span id="averageScore" class="text-4xl font-black">0.0</span>
+                    <span class="text-indigo-200 text-sm">/ 10 average score</span>
+                </div>
+            </div>
+            <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
+                <div id="overallProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Rate your categories below to generate insights.</p>
+        </div>
+
+        <!-- CATEGORIES LIST & INTERACTIVE AUDIT -->
+        <div class="space-y-4">
+            <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider px-1">Pillar Assessments</h2>
             
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <input type="checkbox">
-                <div><strong>Verify Chemistry & Voltage</strong><br>Check contract parameters (VLA, VRLA, NiCad) and matching voltage ranges.</div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <input type="checkbox">
-                <div><strong>Verify Asset Testing Mode</strong><br>Flag multi-day Alber BCT2000 load tests and trigger two-man rule if needed.</div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <input type="checkbox">
-                <div><strong>Secure Security Clearance</strong><br>Match tech/vehicle details to site Tier requirements before route locking.</div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <input type="checkbox">
-                <div><strong>UPS Subcontractor Pull</strong><br>Issue work order, pull tech profiles, and intercept client Q&As.</div>
-            </div>
-            <div class="checklist-item" onclick="toggleCheck(this)">
-                <input type="checkbox">
-                <div><strong>Broadcast Fleet Email</strong><br>Generate and transmit the 4-line uniform dispatch layout to the firm.</div>
+            <div id="categoriesContainer" class="space-y-3">
+                <!-- Javascript will inject categories here dynamically -->
             </div>
         </div>
 
-        <!-- TAB 2: SECURITY SECURITY MATCHING -->
-        <div id="tab-security" class="tab-content">
-            <h2>Site Access Requirements</h2>
-            <p>Verify lead times and dynamic security criteria matrices.</p>
+    </main>
+
+    <!-- BOTTOM APP NAVIGATION (Simulated Mobile Nav) -->
+    <nav class="bg-white border-t border-slate-200 sticky bottom-0 z-50 px-6 py-3 safe-bottom shadow-md flex justify-around items-center">
+        <button class="flex flex-col items-center gap-1 text-indigo-600 transition-colors">
+            <i data-lucide="sliders" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold tracking-wide">Audit Tool</span>
+        </button>
+        <button onclick="alert('Action Plan Feature Coming Soon! Base architecture is ready.')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors">
+            <i data-lucide="target" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold tracking-wide">Action Plan</span>
+        </button>
+        <button onclick="alert('Analytics & Tracking History Coming Soon!')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors">
+            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
+            <span class="text-[10px] font-bold tracking-wide">Analytics</span>
+        </button>
+    </nav>
+
+    <!-- ENGINE CODE (Interactive App JavaScript Engine) -->
+    <script>
+        // Core framework application data structure
+        const defaultCategories = [
+            { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5, icon: "heart", color: "text-rose-500" },
+            { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5, icon: "brain", color: "text-amber-500" },
+            { id: "emotional", name: "Emotional Resilience", description: "Stress levels, boundaries, mindfulness", score: 5, icon: "smile", color: "text-emerald-500" },
+            { id: "social", name: "Social & Relational", description: "Support networks, deep connections", score: 5, icon: "users", color: "text-blue-500" },
+            { id: "professional", name: "Professional & Financial", description: "Career growth, savings, budgeting", score: 5, icon: "briefcase", color: "text-purple-500" },
+            { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5, icon: "compass", color: "text-cyan-500" }
+        ];
+
+        let appData = JSON.parse(localStorage.getItem('growthAppData')) || [...defaultCategories];
+
+        // Renders categories to screen dynamically
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '';
+
+            appData.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3 transition-transform duration-150 active:scale-[0.99]";
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex gap-3">
+                            <div class="${cat.color} bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-center">
+                                <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm leading-tight">${cat.name}</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">${cat.description}</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-bold text-slate-700">
+                            Score: <span id="val-${cat.id}" class="text-indigo-600 font-extrabold text-sm">${cat.score}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center gap-3 mt-1">
+                        <span class="text-[10px] font-bold text-slate-400">1</span>
+                        <input type="range" min="1" max="10" value="${cat.score}" 
+                            class="w-full accent-indigo-600 cursor-pointer h-1.5 bg-slate-100 rounded-lg appearance-none"
+                            oninput="updateScore('${cat.id}', this.value)">
+                        <span class="text-[10px] font-bold text-slate-400">10</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
             
-            <div class="matrix-card">
-                <span class="badge badge-t4">Tier 4: Government / Nuclear</span>
-                <p><strong>Lead Time:</strong> 2 - 4 Weeks</p>
-                <p><strong>Data Required:</strong> Full Name, SSN, DOB, Birthplace, DL# + State, and Security Clearances.</p>
-            </div>
+            lucide.createIcons(); // Initialize icons dynamically
+            calculateMetrics();
+        }
+
+        // Live score updates and storage triggers
+        function updateScore(id, val) {
+            const scoreNum = parseInt(val);
+            document.getElementById(`val-${id}`).innerText = scoreNum;
             
-            <div class="matrix-card">
-                <span class="badge badge-t3">Tier 3: Refineries & Power Plants</span>
-                <p><strong>Lead Time:</strong> 1 - 2 Weeks</p>
-                <p><strong>Data Required:</strong> Calibrated Tool List, Serial Numbers, Safety Certificates (OSHA/NFPA).</p>
-            </div>
-
-            <div class="matrix-card">
-                <span class="badge badge-t2">Tier 2: Hospitals & Enterprise Data Centers</span>
-                <p><strong>Lead Time:</strong> 3 - 5 Business Days</p>
-                <p><strong>Data Required:</strong> Full Tech Name, DL#, Vehicle (Year, Make, Model, Color, Plate #, State).</p>
-            </div>
-        </div>
-
-        <!-- TAB 3: EMAIL GENERATOR -->
-        <div id="tab-email" class="tab-content">
-            <h2>Daily Schedule Builder</h2>
-            <p>Fill out fields to structure the strict 4-line operational layout block.</p>
+            const item = appData.find(c => c.id === id);
+            if(item) item.score = scoreNum;
             
-            <button onclick="generateSampleEmail()" style="margin-bottom: 12px;">Load Sample Active Template</button>
-            <textarea id="emailBox" placeholder="Draft updates here..."></textarea>
-            <button onclick="alert('Template locked to local clipboard buffer!')">Copy Text to Device Clipboard</button>
-        </div>
+            localStorage.setItem('growthAppData', JSON.stringify(appData));
+            calculateMetrics();
+        }
 
-        <!-- TAB 4: COMPLIANCE QUIZ -->
-        <div id="tab-quiz" class="tab-content">
-            <h2>Scenario Competency Quiz</h2>
-            <p id="quiz-question">Loading puzzle scenario...</p>
-            <div id="quiz-options"></div>
-            <p id="quiz-feedback" style="font-weight: bold; margin-top: 10px;"></p>
-        </div>
+        // Calculates global averages and structural insights
+        function calculateMetrics() {
+            const total = appData.reduce((sum, c) => sum + c.score, 0);
+            const avg = (total / appData.length).toFixed(1);
+            
+            document.getElementById('averageScore').innerText = avg;
+            document.getElementById('overallProgressBar').style.width = `${avg * 10}%`;
 
-    </div>
+            let insight = "";
+            if (avg <= 4.0) {
+                insight = "⚠️ Red Zone: High burnout risk. Focus on small minimum viable habits today.";
+            } else if (avg <= 7.0) {
+                insight = "⚡ Balanced: You have stable baselines. Pick your lowest pillar to optimize next.";
+            } else {
+                insight = "🚀 Thriving: High overall capability. Focus on maintaining routines and preventing blindspots.";
+            }
+            document.getElementById('insightText').innerText = insight;
+        }
 
-    <!-- Navigation Footer Links -->
-    <div class="nav-bar">
-        <div class="nav-item active" onclick="switchTab('tab-flow', this)">
-            <span class="nav-icon">📋</span>
-            <span>Flow</span>
-        </div>
+        // Data resets
+        function resetAppData() {
+            if(confirm("Are you sure you want to reset your audit baselines to default?")) {
+                localStorage.removeItem('growthAppData');
+                appData = JSON.parse(JSON.stringify(defaultCategories));
+                renderCategories();
+            }
+        }
+
+        // Run framework on load
+        window.onload = renderCategories;
+    </script>
+</body>
+</html>
+
 
 
 
