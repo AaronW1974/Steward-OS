@@ -3,32 +3,172 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Growth Blueprint</title>
-    <!-- Using the rock-solid Tailwind CSS v3 stable build to guarantee layout loads -->
+    <title>Growth Blueprint Dashboard</title>
+    <!-- Stable Tailwind CSS v3 Framework Library -->
     <script src="https://tailwindcss.com"></script>
-    <!-- Lucide Icons script -->
+    <!-- Lucide Icon Asset Kit -->
     <script src="https://unpkg.com"></script>
-    <style>
-        body {
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-        .safe-bottom {
-            padding-bottom: env(safe-area-inset-bottom, 16px);
-        }
-        .app-view { display: none; }
-        .app-view.active { display: block; }
-    </style>
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
+<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
 
-    <!-- GLOBAL HEADER -->
+    <!-- HEADER BAR -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-2">
             <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
                 <i data-lucide="trending-up" class="w-5 h-5"></i>
             </div>
             <div>
+                <h1 class="text-base font-black text-slate-900 tracking-tight leading-none">Growth Engine</h1>
+                <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">All-In-One Framework</p>
+            </div>
+        </div>
+        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset Data">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+        </button>
+    </header>
+
+    <!-- MAIN SCROLLABLE APP LAYOUT -->
+    <main class="py-6 px-4 max-w-md mx-auto w-full space-y-8">
+        
+        <!-- SECTION 1: MAIN METRIC PROGRESS CARD -->
+        <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
+            <div>
+                <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
+                <div class="flex items-baseline gap-2 mt-1">
+                    <span id="averageScore" class="text-4xl font-black">0.0</span>
+                    <span class="text-indigo-200 text-sm">/ 10 average score</span>
+                </div>
+            </div>
+            <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
+                <div id="overallProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Adjust sliders below to evaluate your state.</p>
+        </div>
+
+        <!-- SECTION 2: AUDIT SLIDERS (THE ORIGINAL FIRST PAGE) -->
+        <div class="space-y-3">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
+                <i data-lucide="sliders" class="w-3.5 h-3.5"></i> 1. Pillar Satisfactions (Audit Tool)
+            </h2>
+            <div id="categoriesContainer" class="space-y-3"></div>
+        </div>
+
+        <hr class="border-slate-200" />
+
+        <!-- SECTION 3: HABIT ENGINE PLANNER (THE SECOND PAGE) -->
+        <div class="space-y-4">
+            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
+                <i data-lucide="target" class="w-3.5 h-3.5"></i> 2. Plan Matrix Generator
+            </h2>
+            
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                <p class="text-xs text-slate-500 leading-relaxed">Select a lagging area to structure an isolated Minimum Viable Action loop.</p>
+                
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Target Blueprint Area</label>
+                    <select id="planPillarSelector" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold focus:outline-none focus:border-indigo-600"></select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Minimum Viable Action (MVA)</label>
+                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Environmental Habit Anchor</label>
+                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
+                </div>
+
+                <button onclick="saveNewActionPlan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 mt-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Deploy Active Action Loop
+                </button>
+            </div>
+        </div>
+
+        <!-- SECTION 4: ACTIVE DEPLOYED HABITS -->
+        <div class="space-y-3 pb-8">
+            <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Deployed Habit Engines</h3>
+            <div id="activePlansContainer" class="space-y-3"></div>
+        </div>
+
+    </main>
+
+    <!-- SCRIPT APPLICATION ENGINE logic -->
+    <script>
+        const defaultCategories = [
+            { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5, icon: "heart", color: "text-rose-500" },
+            { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5, icon: "brain", color: "text-amber-500" },
+            { id: "emotional", name: "Emotional Resilience", description: "Stress levels, boundaries, mindfulness", score: 5, icon: "smile", color: "text-emerald-500" },
+            { id: "social", name: "Social & Relational", description: "Support networks, deep connections", score: 5, icon: "users", color: "text-blue-500" },
+            { id: "professional", name: "Professional & Financial", description: "Career growth, savings, budgeting", score: 5, icon: "briefcase", color: "text-purple-500" },
+            { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5, icon: "compass", color: "text-cyan-500" }
+        ];
+
+        let appData = JSON.parse(localStorage.getItem('growthAppData')) || [...defaultCategories];
+        let actionPlans = JSON.parse(localStorage.getItem('growthActionPlans')) || [];
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = '';
+
+            appData.forEach(cat => {
+                const card = document.createElement('div');
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-3";
+                
+                card.innerHTML = `
+                    <div class="flex items-start justify-between">
+                        <div class="flex gap-3">
+                            <div class="${cat.color} bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-center">
+                                <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-slate-800 text-sm leading-tight">${cat.name}</h3>
+                                <p class="text-xs text-slate-400 mt-0.5">${cat.description}</p>
+                            </div>
+                        </div>
+                        <div class="bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-bold text-slate-700">
+                            Score: <span id="val-${cat.id}" class="text-indigo-600 font-extrabold text-sm">${cat.score}</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3 mt-1">
+                        <span class="text-[10px] font-bold text-slate-400">1</span>
+                        <input type="range" min="1" max="10" value="${cat.score}" 
+                            class="w-full accent-indigo-600 cursor-pointer h-1.5 bg-slate-100 rounded-lg appearance-none"
+                            oninput="updateScore('${cat.id}', this.value)">
+                        <span class="text-[10px] font-bold text-slate-400">10</span>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+            populatePillarDropdown();
+            lucide.createIcons();
+            calculateMetrics();
+        }
+
+        function updateScore(id, val) {
+            const scoreNum = parseInt(val);
+            document.getElementById(`val-${id}`).innerText = scoreNum;
+            const item = appData.find(c => c.id === id);
+            if(item) item.score = scoreNum;
+            localStorage.setItem('growthAppData', JSON.stringify(appData));
+            calculateMetrics();
+            populatePillarDropdown();
+        }
+
+        function calculateMetrics() {
+            const total = appData.reduce((sum, c) => sum + c.score, 0);
+            const avg = (total / appData.length).toFixed(1);
+            document.getElementById('averageScore').innerText = avg;
+            document.getElementById('overallProgressBar').style.width = `${avg * 10}%`;
+
+            let insight = "";
+            if (avg <= 4.0) insight = "⚠️ Red Zone: Focus on immediate small habits.";
+            else if (avg <= 7.0) insight = "⚡ Balanced: Pick your lowest pillar to optimize next.";
+            else insight = "🚀 Thriving: Maintain consistency and eliminate blindspots.";
+            document.getElementById('insightText').innerText = insight;
+        }
+
+
                 <h1 class="text-sm font-black text-slate-900 tracking-tight leading-none">Growth Engine</h1>
                 <p id="currentViewTitle" class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">Audit Tool</p>
             </div>
