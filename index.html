@@ -3,109 +3,157 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Growth Blueprint Dashboard</title>
-    <!-- Stable Tailwind CSS v3 Framework Library -->
-    <script src="https://tailwindcss.com"></script>
-    <!-- Lucide Icon Asset Kit -->
-    <script src="https://unpkg.com"></script>
-</head>
-<body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen">
+    <title>Growth Blueprint</title>
+    <style>
+        /* Standalone App Style Framework */
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { bg-color: #f8fafc; color: #334155; -webkit-tap-highlight-color: transparent; user-select: none; background: #f1f5f9; padding-bottom: 40px; }
+        
+        /* App Header Layout */
+        header { background: #ffffff; padding: 16px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; items-center: center; sticky: top; position: sticky; top: 0; z-index: 100; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .header-title h1 { font-size: 18px; font-weight: 800; color: #0f172a; letter-spacing: -0.5px; }
+        .header-title p { font-size: 10px; font-weight: 700; color: #4f46e5; text-transform: uppercase; margin-top: 2px; }
+        .reset-btn { background: none; border: none; color: #94a3b8; padding: 8px; cursor: pointer; font-size: 16px; font-weight: bold; }
+        .reset-btn:hover { color: #ef4444; }
 
-    <!-- HEADER BAR -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-2">
-            <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
-                <i data-lucide="trending-up" class="w-5 h-5"></i>
-            </div>
-            <div>
-                <h1 class="text-base font-black text-slate-900 tracking-tight leading-none">Growth Engine</h1>
-                <p class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">All-In-One Framework</p>
-            </div>
+        /* Main Container */
+        main { max-width: 450px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 24px; }
+
+        /* Scoring Feature Card */
+        .summary-card { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); color: #ffffff; padding: 20px; rounded-p: 16px; border-radius: 16px; box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2); display: flex; flex-direction: column; gap: 12px; }
+        .summary-label { font-size: 11px; text-transform: uppercase; font-weight: 600; color: #c7d2fe; letter-spacing: 0.5px; }
+        .score-row { display: flex; align-items: baseline; gap: 6px; }
+        .big-score { font-size: 38px; font-weight: 900; }
+        .score-subtext { font-size: 13px; color: #c7d2fe; }
+        .progress-bg { width: 100%; background: rgba(255,255,255,0.2); height: 10px; border-radius: 99px; overflow: hidden; }
+        .progress-bar { height: 100%; background: #ffffff; width: 0%; transition: width 0.4s ease; }
+        .insight-text { font-size: 12px; font-style: italic; color: #e0e7ff; }
+
+        /* Section Typography */
+        .section-title { font-size: 13px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; }
+        
+        /* Card Layout Mechanics */
+        .card { background: #ffffff; padding: 16px; border-radius: 14px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.02); display: flex; flex-direction: column; gap: 12px; }
+        
+        /* Category Component Blocks */
+        .cat-header { display: flex; justify-content: space-between; align-items: flex-start; }
+        .cat-info h3 { font-size: 14px; font-weight: 700; color: #1e293b; }
+        .cat-info p { font-size: 12px; color: #94a3b8; margin-top: 2px; }
+        .badge { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 4px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; color: #334155; }
+        .badge span { color: #4f46e5; font-size: 13px; }
+        
+        /* Sliders layout code */
+        .slider-row { display: flex; align-items: center; gap: 8px; }
+        .slider-label { font-size: 10px; font-weight: 700; color: #94a3b8; }
+        .app-slider { width: 100%; -webkit-appearance: none; height: 6px; background: #f1f5f9; border-radius: 99px; outline: none; }
+        .app-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 18px; height: 18px; border-radius: 50%; background: #4f46e5; cursor: pointer; }
+
+        /* Interface Inputs code */
+        .form-group { display: flex; flex-direction: column; gap: 6px; }
+        .form-group label { font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase; }
+        .app-input, .app-select { width: 100%; padding: 12px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 13px; color: #334155; outline: none; }
+        .app-input:focus, .app-select:focus { border-color: #4f46e5; background: #ffffff; }
+        
+        .action-btn { width: 100%; background: #4f46e5; color: #ffffff; border: none; padding: 14px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.2s; margin-top: 8px; }
+        .action-btn:hover { background: #4338ca; }
+
+        /* Habit Loop Output Modules */
+        .habit-top { display: flex; justify-content: space-between; align-items: flex-start; }
+        .habit-meta h4 { font-size: 10px; font-weight: 700; color: #64748b; text-transform: uppercase; }
+        .habit-meta p { font-size: 14px; font-weight: 700; color: #1e293b; margin-top: 2px; }
+        .habit-anchor { font-size: 12px; color: #64748b; margin-top: 4px; }
+        .habit-anchor span { font-weight: 700; color: #4f46e5; }
+        .delete-btn { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 14px; }
+        .delete-btn:hover { color: #ef4444; }
+        
+        .habit-footer { border-top: 1px solid #f1f5f9; padding-top: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .streak-badge { background: #fffbeb; border: 1px solid #fef3c7; color: #b45309; font-size: 12px; font-weight: 800; padding: 6px 10px; border-radius: 8px; }
+        .log-btn { background: #059669; color: #ffffff; border: none; padding: 8px 12px; border-radius: 8px; font-size: 12px; font-weight: 700; cursor: pointer; }
+        .log-btn:hover { background: #047857; }
+        .empty-text { text-align: center; padding: 24px; font-size: 12px; color: #94a3b8; font-style: italic; border: 2px dashed #e2e8f0; border-radius: 12px; background: #ffffff; }
+    </style>
+</head>
+<body>
+
+    <!-- APPLICATION FIXED HEADER -->
+    <header>
+        <div class="header-title">
+            <h1>Growth Engine</h1>
+            <p>All-In-One Framework</p>
         </div>
-        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset Data">
-            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
-        </button>
+        <button onclick="resetAppData()" class="reset-btn" title="Reset Application">🔄 Reset</button>
     </header>
 
-    <!-- MAIN SCROLLABLE APP LAYOUT -->
-    <main class="py-6 px-4 max-w-md mx-auto w-full space-y-8">
+    <!-- CONTENT BODY LAYOUT -->
+    <main>
         
-        <!-- SECTION 1: MAIN METRIC PROGRESS CARD -->
-        <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
-            <div>
-                <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
-                <div class="flex items-baseline gap-2 mt-1">
-                    <span id="averageScore" class="text-4xl font-black">0.0</span>
-                    <span class="text-indigo-200 text-sm">/ 10 average score</span>
-                </div>
+        <!-- MODULE 1: GLOBAL AGGREGATE CARD -->
+        <div class="summary-card">
+            <p class="summary-label">Overall Baseline Progress</p>
+            <div class="score-row">
+                <span id="averageScore" class="big-score">5.0</span>
+                <span class="score-subtext">/ 10 average score</span>
             </div>
-            <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
-                <div id="overallProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+            <div class="progress-bg">
+                <div id="overallProgressBar" class="progress-bar" style="width: 50%"></div>
             </div>
-            <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Adjust sliders below to evaluate your state.</p>
+            <p id="insightText" class="insight-text">Adjust sliders below to evaluate your state.</p>
         </div>
 
-        <!-- SECTION 2: AUDIT SLIDERS (THE ORIGINAL FIRST PAGE) -->
-        <div class="space-y-3">
-            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
-                <i data-lucide="sliders" class="w-3.5 h-3.5"></i> 1. Pillar Satisfactions (Audit Tool)
-            </h2>
-            <div id="categoriesContainer" class="space-y-3"></div>
-        </div>
-
-        <hr class="border-slate-200" />
-
-        <!-- SECTION 3: HABIT ENGINE PLANNER (THE SECOND PAGE) -->
-        <div class="space-y-4">
-            <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider px-1 flex items-center gap-1.5">
-                <i data-lucide="target" class="w-3.5 h-3.5"></i> 2. Plan Matrix Generator
-            </h2>
-            
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
-                <p class="text-xs text-slate-500 leading-relaxed">Select a lagging area to structure an isolated Minimum Viable Action loop.</p>
-                
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600 uppercase">Target Blueprint Area</label>
-                    <select id="planPillarSelector" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold focus:outline-none focus:border-indigo-600"></select>
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600 uppercase">Minimum Viable Action (MVA)</label>
-                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
-                </div>
-
-                <div class="space-y-2">
-                    <label class="block text-xs font-bold text-slate-600 uppercase">Environmental Habit Anchor</label>
-                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
-                </div>
-
-                <button onclick="saveNewActionPlan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 mt-2">
-                    <i data-lucide="plus-circle" class="w-4 h-4"></i> Deploy Active Action Loop
-                </button>
+        <!-- MODULE 2: AUDIT TOOL PILLARS -->
+        <div>
+            <h2 class="section-title">1. Pillar Satisfactions (Audit Tool)</h2>
+            <div id="categoriesContainer" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- JavaScript appends category modules dynamically here -->
             </div>
         </div>
 
-        <!-- SECTION 4: ACTIVE DEPLOYED HABITS -->
-        <div class="space-y-3 pb-8">
-            <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Deployed Habit Engines</h3>
-            <div id="activePlansContainer" class="space-y-3"></div>
+        <!-- MODULE 3: HABIT ENGINE MATRIX GENERATOR -->
+        <div>
+            <h2 class="section-title">2. Plan Matrix Generator</h2>
+            <div class="card">
+                <div class="form-group">
+                    <label>Target Blueprint Area</label>
+                    <select id="planPillarSelector" class="app-select"></select>
+                </div>
+
+                <div class="form-group">
+                    <label>Minimum Viable Action (MVA)</label>
+                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="app-input">
+                </div>
+
+                <div class="form-group">
+                    <label>Environmental Habit Anchor</label>
+                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="app-input">
+                </div>
+
+                <button onclick="saveNewActionPlan()" class="action-btn">🚀 Deploy Active Action Loop</button>
+            </div>
+        </div>
+
+        <!-- MODULE 4: HABIT OUTPUT LIST -->
+        <div>
+            <h3 class="section-title">Deployed Habit Engines</h3>
+            <div id="activePlansContainer" style="display: flex; flex-direction: column; gap: 12px;">
+                <!-- Deployed habits append here dynamically -->
+            </div>
         </div>
 
     </main>
 
-    <!-- SCRIPT APPLICATION ENGINE logic -->
+    <!-- CENTRAL COMPUTATION ENGINE SCRIPT -->
     <script>
         const defaultCategories = [
-            { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5, icon: "heart", color: "text-rose-500" },
-            { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5, icon: "brain", color: "text-amber-500" },
-            { id: "emotional", name: "Emotional Resilience", description: "Stress levels, boundaries, mindfulness", score: 5, icon: "smile", color: "text-emerald-500" },
-            { id: "social", name: "Social & Relational", description: "Support networks, deep connections", score: 5, icon: "users", color: "text-blue-500" },
-            { id: "professional", name: "Professional & Financial", description: "Career growth, savings, budgeting", score: 5, icon: "briefcase", color: "text-purple-500" },
-            { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5, icon: "compass", color: "text-cyan-500" }
+            { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5 },
+            { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5 },
+            { id: "emotional", name: "Emotional Resilience", description: "Stress levels, boundaries, mindfulness", score: 5 },
+            { id: "social", name: "Social & Relational", description: "Support networks, deep connections", score: 5 },
+            { id: "professional", name: "Professional & Financial", description: "Career growth, savings, budgeting", score: 5 },
+            { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5 }
         ];
 
-        let appData = JSON.parse(localStorage.getItem('growthAppData')) || [...defaultCategories];
-        let actionPlans = JSON.parse(localStorage.getItem('growthActionPlans')) || [];
+        let appData = JSON.parse(localStorage.getItem('standaloneGrowthData')) || [...defaultCategories];
+        let actionPlans = JSON.parse(localStorage.getItem('standaloneActionPlans')) || [];
 
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
@@ -113,63 +161,8 @@
 
             appData.forEach(cat => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-3";
-                
-                card.innerHTML = `
-                    <div class="flex items-start justify-between">
-                        <div class="flex gap-3">
-                            <div class="${cat.color} bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-center">
-                                <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-800 text-sm leading-tight">${cat.name}</h3>
-                                <p class="text-xs text-slate-400 mt-0.5">${cat.description}</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-bold text-slate-700">
-                            Score: <span id="val-${cat.id}" class="text-indigo-600 font-extrabold text-sm">${cat.score}</span>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 mt-1">
-                        <span class="text-[10px] font-bold text-slate-400">1</span>
-                        <input type="range" min="1" max="10" value="${cat.score}" 
-                            class="w-full accent-indigo-600 cursor-pointer h-1.5 bg-slate-100 rounded-lg appearance-none"
-                            oninput="updateScore('${cat.id}', this.value)">
-                        <span class="text-[10px] font-bold text-slate-400">10</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            populatePillarDropdown();
-            lucide.createIcons();
-            calculateMetrics();
-        }
-
-        function updateScore(id, val) {
-            const scoreNum = parseInt(val);
-            document.getElementById(`val-${id}`).innerText = scoreNum;
-            const item = appData.find(c => c.id === id);
-            if(item) item.score = scoreNum;
-            localStorage.setItem('growthAppData', JSON.stringify(appData));
-            calculateMetrics();
-            populatePillarDropdown();
-        }
-
-        function calculateMetrics() {
-            const total = appData.reduce((sum, c) => sum + c.score, 0);
-            const avg = (total / appData.length).toFixed(1);
-            document.getElementById('averageScore').innerText = avg;
-            document.getElementById('overallProgressBar').style.width = `${avg * 10}%`;
-
-            let insight = "";
-            if (avg <= 4.0) insight = "⚠️ Red Zone: Focus on immediate small habits.";
-            else if (avg <= 7.0) insight = "⚡ Balanced: Pick your lowest pillar to optimize next.";
-            else insight = "🚀 Thriving: Maintain consistency and eliminate blindspots.";
-            document.getElementById('insightText').innerText = insight;
-        }
-
-
-                <h1 class="text-sm font-black text-slate-900 tracking-tight leading-none">Growth Engine</h1>
+                card.className = "card";
+e-900 tracking-tight leading-none">Growth Engine</h1>
                 <p id="currentViewTitle" class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">Audit Tool</p>
             </div>
         </div>
