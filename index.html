@@ -15,6 +15,7 @@
             --text-main: #e2e8f0;
             --text-muted: #64748b;
             --glow: 0 0 15px rgba(223, 177, 91, 0.2);
+            --danger: #ef4444;
         }
 
         * {
@@ -29,7 +30,7 @@
             background-color: var(--bg-deep);
             color: var(--text-main);
             padding: 20px;
-            padding-bottom: 90px;
+            padding-bottom: 100px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -77,6 +78,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            letter-spacing: 0.5px;
         }
 
         .script-text {
@@ -88,9 +90,20 @@
             padding: 12px;
             border-left: 3px solid var(--gold-bright);
             border-radius: 4px;
+            margin-bottom: 15px;
         }
 
-        /* Coherence Pacer Styles */
+        .script-ref {
+            display: block;
+            text-align: right;
+            color: var(--gold-bright);
+            font-size: 0.85rem;
+            font-style: normal;
+            margin-top: 8px;
+            font-weight: 600;
+        }
+
+        /* Coherence & Baking Timer Pacer Styles */
         .pacer-container {
             display: flex;
             flex-direction: column;
@@ -105,12 +118,15 @@
             border-radius: 50%;
             border: 4px solid var(--gold-dim);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: var(--gold-bright);
             transition: transform 5s linear, border-color 0.5s ease;
+            text-align: center;
+            padding: 10px;
         }
 
         .pacer-active {
@@ -121,7 +137,7 @@
 
         @keyframes breatheAnimation {
             0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.3); }
+            50% { transform: scale(1.25); }
         }
 
         button {
@@ -133,7 +149,7 @@
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            font-size: 1rem;
+            font-size: 0.95rem;
             margin-top: 10px;
             transition: opacity 0.2s;
         }
@@ -142,62 +158,89 @@
             opacity: 0.8;
         }
 
-        /* Calculator Styles */
+        button.btn-sec {
+            background: rgba(255,255,255,0.05);
+            color: var(--text-main);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* Inputs & Tables */
         .input-group {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .input-group label {
             display: block;
             font-size: 0.85rem;
             color: var(--text-muted);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
-        input {
+        .input-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        input, select {
             width: 100%;
             background: var(--bg-deep);
             border: 1px solid rgba(255,255,255,0.1);
-            padding: 12px;
+            padding: 10px;
             color: #fff;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.95rem;
         }
 
-        input:focus {
+        input:focus, select:focus {
             border-color: var(--gold-bright);
             outline: none;
         }
 
         .result-box {
-            margin-top: 15px;
-            padding: 15px;
-            background: rgba(223, 177, 91, 0.05);
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(223, 177, 91, 0.04);
             border: 1px dashed var(--gold-dim);
             border-radius: 6px;
             text-align: center;
         }
 
         .result-val {
-            font-size: 1.6rem;
+            font-size: 1.5rem;
             color: var(--gold-bright);
             font-weight: bold;
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        /* Checklist Items */
         .todo-item {
             display: flex;
             align-items: center;
-            margin-bottom: 12px;
-            font-size: 0.95rem;
+            margin-bottom: 10px;
+            font-size: 0.9rem;
         }
 
         .todo-item input[type="checkbox"] {
             width: auto;
             margin-right: 12px;
-            transform: scale(1.2);
+            transform: scale(1.1);
             accent-color: var(--gold-bright);
+        }
+
+        /* Debt Table Layout */
+        .debt-list {
+            margin-top: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        .debt-row {
+            display: flex;
+            justify-content: space-between;
+            background: rgba(0,0,0,0.2);
+            padding: 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
         }
 
         /* Bottom Nav */
@@ -254,64 +297,42 @@
 <div class="container">
     <header>
         <h1>Steward OS</h1>
-        <p>Cybernetic Synchronization Panel</p>
+        <p>Cybernetic Integration Interface</p>
     </header>
 
-    <!-- PAGE 1: CORE ALIGNMENT -->
-    <div id="page-core" class="page active">
-        <!-- Pillar 1: Attention -->
+    <!-- PAGE 1: ALIGNMENT & BIOLOGY -->
+    <div id="page-alignment" class="page active">
+        <!-- Scripture Shuffle Engine -->
         <div class="card">
-            <div class="card-title"><span>Pillar 1: RAS Initialization</span></div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:10px;">Calibrate your neural filters immediately upon waking.</p>
+            <div class="card-title"><span>Pillar 1: Daily Scripture Anchor</span></div>
             <div class="script-text">
-                "My mind is hyper-aware of opportunities to resolve conflict, unite my team, and speak with divine authority today. I operate as a clean vessel for my Creator's vision."
+                <span id="scriptureDisplay">Syncing divine parameters...</span>
+                <span id="referenceDisplay" class="script-ref"></span>
             </div>
         </div>
 
-        <!-- Pillar 2: Metabolic Sovereignty -->
+        <!-- Sourdough Fermentation Engine -->
         <div class="card">
-            <div class="card-title"><span>Pillar 2: Biological Log</span></div>
-            <div class="todo-item">
-                <input type="checkbox" id="m1"> <label for="m1">06:00 AM - Adrenal Hydration Complete</label>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" id="m2"> <label for="m2">08:30 AM - Metabolic Fuel 1 (Sourdough + Fats)</label>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" id="m3"> <label for="m3">01:00 PM - Lean Protein Optimization</label>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" id="m4"> <label for="m4">07:30 PM - Fermented Microbiome Support</label>
-            </div>
-        </div>
-    </div>
-
-    <!-- PAGE 2: COHERENCE DRIVER -->
-    <div id="page-coherence" class="page">
-        <div class="card">
-            <div class="card-title"><span>Pillar 5: Autonomic Coherence</span></div>
-            <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:15px; text-align:center;">
-                Inhale as the circle expands. Exhale as it contracts. Force your nervous system to express deep gratitude to your Creator.
-            </p>
-            <div class="pacer-container">
-                <div id="pacerCircle" class="circle-pacer">READY</div>
-            </div>
-            <button id="pacerBtn" onclick="togglePacer()">Initialize Calibration Loop</button>
-        </div>
-    </div>
-
-    <!-- PAGE 3: RESERVE CAPITAL -->
-    <div id="page-reserve" class="page">
-        <div class="card">
-            <div class="card-title"><span>Pillar 3: The Joseph Protocol</span></div>
-            <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:15px;">
-                Calculate your explicit Financial Freedom Number based on the standard Rule of 25 multiplier.
-            </p>
+            <div class="card-title"><span>Pillar 2: Sourdough Fermentation</span></div>
             <div class="input-group">
-                <label>Target Annual Living Expenses ($)</label>
-                <input type="number" id="expensesInput" value="60000" oninput="calculateFFN()">
+                <label>Current Phase Sequence</label>
+                <select id="bakePhaseSelect" onchange="updateBakePhaseDisplay()">
+                    <option value="0">Phase 1: Autolyse (Rest Dough) [30 Min]</option>
+                    <option value="1">Phase 2: Bulk Fermentation (Rise) [4 Hour]</option>
+                    <option value="2">Phase 3: Bench Rest & Shape [20 Min]</option>
+                    <option value="3">Phase 4: Final Cold Proof [12 Hour]</option>
+                </select>
             </div>
-            <div class="result-box">
-                <div>Financial Freedom Number (FFN)</div>
-                <div class="result-val" id="ffnResult">$1,500,000</div>
+            <div style="text-align: center; margin: 15px 0;">
+                <div id="bakeTimerDisplay" style="font-size: 2rem; font-weight: bold; color: var(--gold-bright);">30:00</div>
+                <p id="bakePhaseDesc" style="font-size: 0.8rem; color: var(--text-muted); margin-top:4px;">Flour and water structural protein bonding initialization.</p>
             </div>
+            <div class="input-row">
+                <button onclick="startBakeTimer()">Start Phase</button>
+                <button class="btn-sec" onclick="resetBakeTimer()">Reset</button>
+            </div>
+        </div>
+
+        <!-- Biological Logging -->
+        <div class="card">
+
