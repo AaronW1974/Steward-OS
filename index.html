@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Growth Blueprint Professional</title>
-    <!-- Tailwind CSS for mobile application interfaces -->
-    <script src="https://jsdelivr.net"></script>
-    <!-- Lucide Icons for production aesthetics -->
+    <title>Growth Blueprint</title>
+    <!-- Using the rock-solid Tailwind CSS v3 stable build to guarantee layout loads -->
+    <script src="https://tailwindcss.com"></script>
+    <!-- Lucide Icons script -->
     <script src="https://unpkg.com"></script>
     <style>
-        /* Eliminates mobile touch latency and text selection bugs */
         body {
             -webkit-tap-highlight-color: transparent;
             user-select: none;
@@ -17,15 +16,14 @@
         .safe-bottom {
             padding-bottom: env(safe-area-inset-bottom, 16px);
         }
-        /* Hidden layout utility classes */
         .app-view { display: none; }
         .app-view.active { display: block; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- GLOBAL APPLICATION HEADER -->
-    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-xs">
+    <!-- GLOBAL HEADER -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-sm">
         <div class="flex items-center gap-2">
             <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
                 <i data-lucide="trending-up" class="w-5 h-5"></i>
@@ -35,17 +33,17 @@
                 <p id="currentViewTitle" class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">Audit Tool</p>
             </div>
         </div>
-        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset All Engine Data">
+        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset All Data">
             <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
     </header>
 
-    <!-- CORE LOGICAL VIEWS -->
+    <!-- CONTENT DISPLAY MAIN -->
     <main class="flex-1 overflow-y-auto px-4 py-5 max-w-md mx-auto w-full space-y-5">
         
         <!-- ================= VIEW 1: AUDIT TOOL ================= -->
         <div id="view-audit" class="app-view active space-y-5">
-            <!-- DYNAMIC METRIC ENGINE SUMMARY CARD -->
+            <!-- PROGRESS SUMMARY CARD -->
             <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
                 <div>
                     <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
@@ -60,7 +58,7 @@
                 <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Adjust sliders to dynamically evaluate status.</p>
             </div>
 
-            <!-- INTERACTIVE RATING LAYOUTS -->
+            <!-- PILLAR RATINGS SECTION -->
             <div class="space-y-3">
                 <h2 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Pillar Satisfactions</h2>
                 <div id="categoriesContainer" class="space-y-3"></div>
@@ -69,49 +67,49 @@
 
         <!-- ================= VIEW 2: ACTION PLAN ================= -->
         <div id="view-action" class="app-view space-y-5">
-            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
                 <div class="flex items-center gap-2 text-slate-900">
                     <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
                     <h2 class="font-extrabold text-base">Plan Matrix Generator</h2>
                 </div>
                 <p class="text-xs text-slate-500 leading-relaxed">Select a lagging area to structure an isolated Minimum Viable Action loop.</p>
                 
-                <div class="space-y-3 pt-1">
+                <div class="space-y-2 pt-1">
                     <label class="block text-xs font-bold text-slate-600 uppercase">Target Blueprint Area</label>
-                    <select id="planPillarSelector" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold focus:outline-indigo-600">
-                        <!-- Dynamic populating -->
+                    <select id="planPillarSelector" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold focus:outline-none focus:border-indigo-600">
+                        <!-- Dynamic Populating -->
                     </select>
                 </div>
 
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600 uppercase">Minimum Viable Action (MVA)</label>
-                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-indigo-600">
+                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
                 </div>
 
-                <div class="space-y-3">
+                <div class="space-y-2">
                     <label class="block text-xs font-bold text-slate-600 uppercase">Environmental Habit Anchor</label>
-                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-indigo-600">
+                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-none focus:border-indigo-600">
                 </div>
 
-                <button onclick="saveNewActionPlan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
+                <button onclick="saveNewActionPlan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 mt-2">
                     <i data-lucide="plus-circle" class="w-4 h-4"></i>
                     Deploy Active Action Loop
                 </button>
             </div>
 
-            <!-- LIVE RUNNING OPERATIONS LIST -->
+            <!-- LIVE DEPLOYED LIST -->
             <div class="space-y-3">
                 <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Deployed Habit Engines</h3>
                 <div id="activePlansContainer" class="space-y-3">
-                    <!-- Dynamic rendering -->
+                    <!-- Dynamic Rendering -->
                 </div>
             </div>
         </div>
 
     </main>
 
-    <!-- NAVIGATION FOOTER CONTROLLER -->
-    <nav class="bg-white border-t border-slate-200 sticky bottom-0 z-50 px-8 py-3 safe-bottom shadow-md flex justify-around items-center">
+    <!-- STICKY MOBILE NAVIGATION BOTTOM BAR -->
+    <nav class="bg-white border-t border-slate-200 sticky bottom-0 z-50 px-8 py-3 safe-bottom shadow-lg flex justify-around items-center">
         <button id="nav-btn-audit" onclick="switchView('audit')" class="flex flex-col items-center gap-1 text-indigo-600 transition-colors">
             <i data-lucide="sliders" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold tracking-wide">Audit Tool</span>
@@ -122,9 +120,8 @@
         </button>
     </nav>
 
-    <!-- ARCHITECTURE ENGINE CONTROLLER SCRIPTS -->
+    <!-- ENGINE SCRIPTS -->
     <script>
-        // Static configuration settings 
         const defaultCategories = [
             { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5, icon: "heart", color: "text-rose-500" },
             { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5, icon: "brain", color: "text-amber-500" },
@@ -134,16 +131,13 @@
             { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5, icon: "compass", color: "text-cyan-500" }
         ];
 
-        // Centralized Application Data Store state
         let appData = JSON.parse(localStorage.getItem('growthAppData')) || [...defaultCategories];
         let actionPlans = JSON.parse(localStorage.getItem('growthActionPlans')) || [];
 
-        // View Management Engine
         function switchView(viewName) {
             document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
             document.getElementById(`view-${viewName}`).classList.add('active');
             
-            // Handle active/inactive states for navigation layout
             document.querySelectorAll('nav button').forEach(b => {
                 b.classList.remove('text-indigo-600');
                 b.classList.add('text-slate-400');
@@ -159,18 +153,22 @@
             }
         }
 
-        // Auditing View Renderer logic
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
             container.innerHTML = '';
 
             appData.forEach(cat => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3";
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-sm flex flex-col gap-3";
                 
                 card.innerHTML = `
                     <div class="flex items-start justify-between">
                         <div class="flex gap-3">
+                            <div class="${cat.color} bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-center">
+                                <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
+                            </div>
+                            <div>
+
 
 
 
