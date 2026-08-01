@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Growth Blueprint</title>
-    <!-- Tailwind CSS for modern mobile UI -->
+    <title>Growth Blueprint Professional</title>
+    <!-- Tailwind CSS for mobile application interfaces -->
     <script src="https://jsdelivr.net"></script>
-    <!-- Lucide Icons for app aesthetics -->
+    <!-- Lucide Icons for production aesthetics -->
     <script src="https://unpkg.com"></script>
     <style>
-        /* Mobile app feel enhancements */
+        /* Eliminates mobile touch latency and text selection bugs */
         body {
             -webkit-tap-highlight-color: transparent;
             user-select: none;
@@ -17,71 +17,114 @@
         .safe-bottom {
             padding-bottom: env(safe-area-inset-bottom, 16px);
         }
+        /* Hidden layout utility classes */
+        .app-view { display: none; }
+        .app-view.active { display: block; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans antialiased min-h-screen flex flex-col justify-between">
 
-    <!-- TOP HEADER -->
+    <!-- GLOBAL APPLICATION HEADER -->
     <header class="bg-white border-b border-slate-200 sticky top-0 z-50 px-4 py-3 flex items-center justify-between shadow-xs">
         <div class="flex items-center gap-2">
             <div class="bg-indigo-600 text-white p-2 rounded-xl shadow-sm">
                 <i data-lucide="trending-up" class="w-5 h-5"></i>
             </div>
-            <h1 class="text-lg font-bold text-slate-900 tracking-tight">Growth Blueprint</h1>
+            <div>
+                <h1 class="text-sm font-black text-slate-900 tracking-tight leading-none">Growth Engine</h1>
+                <p id="currentViewTitle" class="text-[10px] font-bold text-indigo-600 uppercase tracking-wider mt-0.5">Audit Tool</p>
+            </div>
         </div>
-        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset Data">
-            <i data-lucide="refresh-cw" class="w-5 h-5"></i>
+        <button onclick="resetAppData()" class="text-slate-400 hover:text-red-500 p-2 rounded-lg transition-colors" title="Reset All Engine Data">
+            <i data-lucide="refresh-cw" class="w-4 h-4"></i>
         </button>
     </header>
 
-    <!-- MAIN APP SCREEN CONTAINER -->
-    <main class="flex-1 overflow-y-auto px-4 py-6 max-w-md mx-auto w-full space-y-6">
+    <!-- CORE LOGICAL VIEWS -->
+    <main class="flex-1 overflow-y-auto px-4 py-5 max-w-md mx-auto w-full space-y-5">
         
-        <!-- DYNAMIC SUMMARY CARD -->
-        <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
-            <div>
-                <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
-                <div class="flex items-baseline gap-2 mt-1">
-                    <span id="averageScore" class="text-4xl font-black">0.0</span>
-                    <span class="text-indigo-200 text-sm">/ 10 average score</span>
+        <!-- ================= VIEW 1: AUDIT TOOL ================= -->
+        <div id="view-audit" class="app-view active space-y-5">
+            <!-- DYNAMIC METRIC ENGINE SUMMARY CARD -->
+            <div class="bg-gradient-to-br from-indigo-600 to-violet-700 text-white p-5 rounded-2xl shadow-md space-y-3">
+                <div>
+                    <p class="text-xs text-indigo-200 uppercase font-semibold tracking-wider">Overall Baseline Progress</p>
+                    <div class="flex items-baseline gap-2 mt-1">
+                        <span id="averageScore" class="text-4xl font-black">0.0</span>
+                        <span class="text-indigo-200 text-sm">/ 10 average score</span>
+                    </div>
                 </div>
+                <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
+                    <div id="overallProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Adjust sliders to dynamically evaluate status.</p>
             </div>
-            <div class="w-full bg-white/20 h-2.5 rounded-full overflow-hidden">
-                <div id="overallProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+
+            <!-- INTERACTIVE RATING LAYOUTS -->
+            <div class="space-y-3">
+                <h2 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Pillar Satisfactions</h2>
+                <div id="categoriesContainer" class="space-y-3"></div>
             </div>
-            <p id="insightText" class="text-xs text-indigo-100 italic pt-1">Rate your categories below to generate insights.</p>
         </div>
 
-        <!-- CATEGORIES LIST & INTERACTIVE AUDIT -->
-        <div class="space-y-4">
-            <h2 class="text-sm font-bold text-slate-500 uppercase tracking-wider px-1">Pillar Assessments</h2>
-            
-            <div id="categoriesContainer" class="space-y-3">
-                <!-- Javascript will inject categories here dynamically -->
+        <!-- ================= VIEW 2: ACTION PLAN ================= -->
+        <div id="view-action" class="app-view space-y-5">
+            <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-xs space-y-4">
+                <div class="flex items-center gap-2 text-slate-900">
+                    <i data-lucide="zap" class="w-5 h-5 text-indigo-600"></i>
+                    <h2 class="font-extrabold text-base">Plan Matrix Generator</h2>
+                </div>
+                <p class="text-xs text-slate-500 leading-relaxed">Select a lagging area to structure an isolated Minimum Viable Action loop.</p>
+                
+                <div class="space-y-3 pt-1">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Target Blueprint Area</label>
+                    <select id="planPillarSelector" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-semibold focus:outline-indigo-600">
+                        <!-- Dynamic populating -->
+                    </select>
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Minimum Viable Action (MVA)</label>
+                    <input type="text" id="planMVAInput" placeholder="e.g., Read 2 pages every morning" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-indigo-600">
+                </div>
+
+                <div class="space-y-3">
+                    <label class="block text-xs font-bold text-slate-600 uppercase">Environmental Habit Anchor</label>
+                    <input type="text" id="planAnchorInput" placeholder="e.g., Right after I sit down with coffee" class="w-full bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs font-medium focus:outline-indigo-600">
+                </div>
+
+                <button onclick="saveNewActionPlan()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs py-3 rounded-xl shadow-sm transition-all flex items-center justify-center gap-2">
+                    <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                    Deploy Active Action Loop
+                </button>
+            </div>
+
+            <!-- LIVE RUNNING OPERATIONS LIST -->
+            <div class="space-y-3">
+                <h3 class="text-[11px] font-bold text-slate-400 uppercase tracking-wider px-1">Deployed Habit Engines</h3>
+                <div id="activePlansContainer" class="space-y-3">
+                    <!-- Dynamic rendering -->
+                </div>
             </div>
         </div>
 
     </main>
 
-    <!-- BOTTOM APP NAVIGATION (Simulated Mobile Nav) -->
-    <nav class="bg-white border-t border-slate-200 sticky bottom-0 z-50 px-6 py-3 safe-bottom shadow-md flex justify-around items-center">
-        <button class="flex flex-col items-center gap-1 text-indigo-600 transition-colors">
+    <!-- NAVIGATION FOOTER CONTROLLER -->
+    <nav class="bg-white border-t border-slate-200 sticky bottom-0 z-50 px-8 py-3 safe-bottom shadow-md flex justify-around items-center">
+        <button id="nav-btn-audit" onclick="switchView('audit')" class="flex flex-col items-center gap-1 text-indigo-600 transition-colors">
             <i data-lucide="sliders" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold tracking-wide">Audit Tool</span>
         </button>
-        <button onclick="alert('Action Plan Feature Coming Soon! Base architecture is ready.')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors">
+        <button id="nav-btn-action" onclick="switchView('action')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors">
             <i data-lucide="target" class="w-5 h-5"></i>
             <span class="text-[10px] font-bold tracking-wide">Action Plan</span>
         </button>
-        <button onclick="alert('Analytics & Tracking History Coming Soon!')" class="flex flex-col items-center gap-1 text-slate-400 hover:text-slate-600 transition-colors">
-            <i data-lucide="bar-chart-3" class="w-5 h-5"></i>
-            <span class="text-[10px] font-bold tracking-wide">Analytics</span>
-        </button>
     </nav>
 
-    <!-- ENGINE CODE (Interactive App JavaScript Engine) -->
+    <!-- ARCHITECTURE ENGINE CONTROLLER SCRIPTS -->
     <script>
-        // Core framework application data structure
+        // Static configuration settings 
         const defaultCategories = [
             { id: "physical", name: "Physical Wellness", description: "Sleep, nutrition, energy management", score: 5, icon: "heart", color: "text-rose-500" },
             { id: "mental", name: "Mental & Intellectual", description: "Critical thinking, reading, skill-building", score: 5, icon: "brain", color: "text-amber-500" },
@@ -91,93 +134,44 @@
             { id: "spiritual", name: "Spiritual & Purpose", description: "Values alignment, giving back, clarity", score: 5, icon: "compass", color: "text-cyan-500" }
         ];
 
+        // Centralized Application Data Store state
         let appData = JSON.parse(localStorage.getItem('growthAppData')) || [...defaultCategories];
+        let actionPlans = JSON.parse(localStorage.getItem('growthActionPlans')) || [];
 
-        // Renders categories to screen dynamically
+        // View Management Engine
+        function switchView(viewName) {
+            document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
+            document.getElementById(`view-${viewName}`).classList.add('active');
+            
+            // Handle active/inactive states for navigation layout
+            document.querySelectorAll('nav button').forEach(b => {
+                b.classList.remove('text-indigo-600');
+                b.classList.add('text-slate-400');
+            });
+            document.getElementById(`nav-btn-${viewName}`).classList.add('text-indigo-600');
+            document.getElementById(`nav-btn-${viewName}`).classList.remove('text-slate-400');
+            
+            document.getElementById('currentViewTitle').innerText = viewName === 'audit' ? 'Audit Tool' : 'Action Plan';
+            
+            if (viewName === 'action') {
+                populatePillarDropdown();
+                renderActionPlans();
+            }
+        }
+
+        // Auditing View Renderer logic
         function renderCategories() {
             const container = document.getElementById('categoriesContainer');
             container.innerHTML = '';
 
             appData.forEach(cat => {
                 const card = document.createElement('div');
-                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3 transition-transform duration-150 active:scale-[0.99]";
+                card.className = "bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex flex-col gap-3";
                 
                 card.innerHTML = `
                     <div class="flex items-start justify-between">
                         <div class="flex gap-3">
-                            <div class="${cat.color} bg-slate-50 p-2.5 rounded-xl border border-slate-100 flex items-center justify-center">
-                                <i data-lucide="${cat.icon}" class="w-5 h-5"></i>
-                            </div>
-                            <div>
-                                <h3 class="font-bold text-slate-800 text-sm leading-tight">${cat.name}</h3>
-                                <p class="text-xs text-slate-400 mt-0.5">${cat.description}</p>
-                            </div>
-                        </div>
-                        <div class="bg-slate-100 px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-bold text-slate-700">
-                            Score: <span id="val-${cat.id}" class="text-indigo-600 font-extrabold text-sm">${cat.score}</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex items-center gap-3 mt-1">
-                        <span class="text-[10px] font-bold text-slate-400">1</span>
-                        <input type="range" min="1" max="10" value="${cat.score}" 
-                            class="w-full accent-indigo-600 cursor-pointer h-1.5 bg-slate-100 rounded-lg appearance-none"
-                            oninput="updateScore('${cat.id}', this.value)">
-                        <span class="text-[10px] font-bold text-slate-400">10</span>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-            
-            lucide.createIcons(); // Initialize icons dynamically
-            calculateMetrics();
-        }
 
-        // Live score updates and storage triggers
-        function updateScore(id, val) {
-            const scoreNum = parseInt(val);
-            document.getElementById(`val-${id}`).innerText = scoreNum;
-            
-            const item = appData.find(c => c.id === id);
-            if(item) item.score = scoreNum;
-            
-            localStorage.setItem('growthAppData', JSON.stringify(appData));
-            calculateMetrics();
-        }
-
-        // Calculates global averages and structural insights
-        function calculateMetrics() {
-            const total = appData.reduce((sum, c) => sum + c.score, 0);
-            const avg = (total / appData.length).toFixed(1);
-            
-            document.getElementById('averageScore').innerText = avg;
-            document.getElementById('overallProgressBar').style.width = `${avg * 10}%`;
-
-            let insight = "";
-            if (avg <= 4.0) {
-                insight = "⚠️ Red Zone: High burnout risk. Focus on small minimum viable habits today.";
-            } else if (avg <= 7.0) {
-                insight = "⚡ Balanced: You have stable baselines. Pick your lowest pillar to optimize next.";
-            } else {
-                insight = "🚀 Thriving: High overall capability. Focus on maintaining routines and preventing blindspots.";
-            }
-            document.getElementById('insightText').innerText = insight;
-        }
-
-        // Data resets
-        function resetAppData() {
-            if(confirm("Are you sure you want to reset your audit baselines to default?")) {
-                localStorage.removeItem('growthAppData');
-                appData = JSON.parse(JSON.stringify(defaultCategories));
-                renderCategories();
-            }
-        }
-
-        // Run framework on load
-        window.onload = renderCategories;
-    </script>
-</body>
-</html>
 
 
 
